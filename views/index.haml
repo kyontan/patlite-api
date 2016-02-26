@@ -1,0 +1,66 @@
+%link(rel = "stylesheet" href="/css/index.css")
+
+%h1 Patlite Commander
+
+%h2 Endpoints
+
+%table
+  %thead
+    %th Endpoint
+    %td
+      %table.options
+        %tr
+          %th.option Parameter
+          %td.description Description
+          %td.values Value
+
+  %tbody
+    - settings.allowed_commands.each do |command|
+      %tr.endpoint
+        %th= "GET /cmd/#{command}"
+        %td
+          - case command
+          - when "alert"
+            %table.options
+              %tr
+                %th.option.red r
+                %td.description red
+                %td.values
+                  %span 0, 1, 2, 3, 9
+              %tr
+                %th.option.yellow y
+                %td.description yellow
+                %td.values
+                  %span 0, 1, 2, 3, 9
+              %tr
+                %th.option.green g
+                %td.description green
+                %td.values
+                  %span 0, 1, 2, 3, 9
+              %tr
+                %th.option.buzzer z
+                %td.description buzzer
+                %td.values
+                  %span 0, 1, 2, 3, 4, 9
+              %tr
+                %th.option.second sec
+                %td.description seconds
+                %td.values
+                  %span 0 - 99
+          - when "clear"
+            %table.options
+              %tr
+                %th.option.patlite p
+                %td.description patlite
+                %td.values
+                  %span 0, 1
+              %tr
+                %th.option.buzzer z
+                %td.description buzzer
+                %td.values
+                  %span 0, 1
+
+%footer
+  Reference:
+  - url = "http://www.patlite.jp/download/NH-SPL-Manual8158-C.pdf"
+  %a(href = url)= url
