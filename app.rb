@@ -21,11 +21,8 @@ configure do
   set :haml, format: :html5
   set :scss, style: :expanded
 
-  set :allowed_hosts, %w(127.0.0.0/8
-                         10.0.0.0/8
-                         172.16.0.0/12
-                         192.168.0.0/16
-                      ).map{|x| IPAddr.new(x) }
+  allow_hosts = ENV["ALLOW_HOSTS"]&.split(?,) || %w(127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16)
+  set :allowed_hosts, allow_hosts.map{|x| IPAddr.new(x) }
 
   set :allowed_commands, %w(alert clear status test) # doclear dotest
   set :allowed_alert_options, %i(r y g z sec)
