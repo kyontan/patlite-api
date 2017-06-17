@@ -1,0 +1,12 @@
+version: '2'
+
+service:
+  app:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    container_name: app
+    environment:
+      - ALLOW_HOSTS       # WARNING: Docker use NAT. please proxy Real IP Address in production.
+      - PATLITE_HOST
+      - PATLITE_RUSER
