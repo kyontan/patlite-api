@@ -6,13 +6,6 @@ require "ipaddr"
 class PatliteArgumentError < ArgumentError; end
 
 configure do
-  log_path = Pathname(settings.root) + "log"
-  FileUtils.makedirs(log_path)
-  logger = Logger.new("#{log_path}/#{settings.environment}.log", "daily")
-  logger.instance_eval { alias :write :<< unless respond_to?(:write) }
-  use Rack::CommonLogger, logger
-
-  enable :prefixed_redirects
   set :haml, format: :html5
 
   allow_hosts = ENV["ALLOW_HOSTS"]&.split(?,) || %w(127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16)
@@ -27,10 +20,6 @@ configure do
 end
 
 helpers do
-  def h(text)
-    Rack::Utils.escape_html(text)
-  end
-
   def patlite_command(command, options, dry_run: false)
     if not settings.allowed_commands.include?(command)
       raise "Invalid command: #{command}"
