@@ -10,3 +10,5 @@ service:
       - ALLOW_HOSTS       # WARNING: Docker use NAT. please proxy Real IP Address in production.
       - PATLITE_HOST
       - PATLITE_RUSER
+    ports:
+      - "3000:3000"

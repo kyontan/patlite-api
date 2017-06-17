@@ -14,4 +14,4 @@ RUN bundle install --path=vendor/bundle
 
 ADD . /app/
 
-CMD bundle exec rackup -o 0.0.0.0
+CMD bundle exec rackup -p 3000 -o 0.0.0.0
