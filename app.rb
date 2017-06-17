@@ -19,7 +19,6 @@ configure do
 
   enable :prefixed_redirects
   set :haml, format: :html5
-  set :scss, style: :expanded
 
   allow_hosts = ENV["ALLOW_HOSTS"]&.split(?,) || %w(127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16)
   set :allowed_hosts, allow_hosts.map{|x| IPAddr.new(x) }
@@ -184,17 +183,4 @@ end
 
 not_found do
   { error: "not found" }.to_json
-end
-
-get "/css/*" do
-  file_name = params[:splat].first
-  views =  Pathname(settings.views)
-
-  if File.exists?(views + "css" + file_name)
-    send_file views + "css" + file_name
-  elsif File.exists?(views + "scss" + file_name.sub(%r{.css$}, ".scss"))
-    scss :"scss/#{file_name.sub(%r{.css$}, "")}"
-  else
-    halt 404
-  end
 end
