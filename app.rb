@@ -166,5 +166,6 @@ get %r{/cmd/(?<command>.+)} do
 end
 
 not_found do
+  content_type :json
   { error: "not found" }.to_json
 end
