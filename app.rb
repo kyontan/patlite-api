@@ -5,21 +5,8 @@ require "ipaddr"
 
 class PatliteArgumentError < ArgumentError; end
 
-configure :development do
-  use BetterErrors::Middleware
-  BetterErrors.application_root = settings.root
-end
-
 configure do
-  log_path = Pathname(settings.root) + "log"
-  FileUtils.makedirs(log_path)
-  logger = Logger.new("#{log_path}/#{settings.environment}.log", "daily")
-  logger.instance_eval { alias :write :<< unless respond_to?(:write) }
-  use Rack::CommonLogger, logger
-
-  enable :prefixed_redirects
   set :haml, format: :html5
-  set :scss, style: :expanded
 
   allow_hosts = ENV["ALLOW_HOSTS"]&.split(?,) || %w(127.0.0.0/8 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16)
   set :allowed_hosts, allow_hosts.map{|x| IPAddr.new(x) }
@@ -33,10 +20,6 @@ configure do
 end
 
 helpers do
-  def h(text)
-    Rack::Utils.escape_html(text)
-  end
-
   def patlite_command(command, options, dry_run: false)
     if not settings.allowed_commands.include?(command)
       raise "Invalid command: #{command}"
@@ -183,18 +166,6 @@ get %r{/cmd/(?<command>.+)} do
 end
 
 not_found do
+  content_type :json
   { error: "not found" }.to_json
-end
-
-get "/css/*" do
-  file_name = params[:splat].first
-  views =  Pathname(settings.views)
-
-  if File.exists?(views + "css" + file_name)
-    send_file views + "css" + file_name
-  elsif File.exists?(views + "scss" + file_name.sub(%r{.css$}, ".scss"))
-    scss :"scss/#{file_name.sub(%r{.css$}, "")}"
-  else
-    halt 404
-  end
 end
