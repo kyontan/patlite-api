@@ -5,11 +5,6 @@ require "ipaddr"
 
 class PatliteArgumentError < ArgumentError; end
 
-configure :development do
-  use BetterErrors::Middleware
-  BetterErrors.application_root = settings.root
-end
-
 configure do
   log_path = Pathname(settings.root) + "log"
   FileUtils.makedirs(log_path)
