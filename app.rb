@@ -25,15 +25,14 @@ configure do
                          10.0.0.0/8
                          172.16.0.0/12
                          192.168.0.0/16
-                         59.106.108.64/26
                       ).map{|x| IPAddr.new(x) }
 
   set :allowed_commands, %w(alert clear status test) # doclear dotest
   set :allowed_alert_options, %i(r y g z sec)
   set :allowed_clear_options, %i(p z)
 
-  set :patlite_host,  "192.168.20.1"
-  set :patlite_ruser, "patlite"
+  set :patlite_host,  ENV["PATLITE_HOST"]
+  set :patlite_ruser, ENV["PATLITE_RUSER"] || "patlite"
 end
 
 helpers do
