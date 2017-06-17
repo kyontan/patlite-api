@@ -201,14 +201,3 @@ get "/css/*" do
     halt 404
   end
 end
-
-get "/js/*.js" do
-  file_name = params[:splat].first
-  views =  Pathname(settings.views)
-
-  if File.exists?(views + "js" + "#{file_name}.js")
-    send_file views + "js" + "#{file_name}.js"
-  else
-    halt 404
-  end
-end
