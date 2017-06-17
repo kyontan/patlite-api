@@ -8,7 +8,7 @@ services:
     container_name: app
     environment:
       - ALLOW_HOSTS       # WARNING: Docker use NAT. please proxy Real IP Address in production.
-      - PATLITE_HOST
+      - PATLITE_HOST=192.168.53.30
       - PATLITE_RUSER
     ports:
-      - "9292:9292"
+      - "3000:3000"
